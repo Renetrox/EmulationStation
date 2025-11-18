@@ -169,7 +169,12 @@ std::map<std::string, std::map<std::string, ThemeData::ElementPropertyType>> The
 		{ "logoSize", NORMALIZED_PAIR },
 		{ "logoAlignment", STRING },
 		{ "maxLogoCount", FLOAT },
-		{ "zIndex", FLOAT } } }
+		{ "zIndex", FLOAT },
+		// NUEVO: propiedades extra del carrusel
+		{ "minLogoOpacity", FLOAT },      // 0.0 – 1.0
+		{ "scaledLogoSpacing", FLOAT },   // factor de separación
+		{ "scrollSound", PATH }           // sonido opcional (por ahora solo parseado)
+	} }
 };
 
 #define MINIMUM_THEME_FORMAT_VERSION 3
