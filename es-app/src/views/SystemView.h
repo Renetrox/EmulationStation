@@ -7,6 +7,7 @@
 #include "resources/Font.h"
 #include "GuiComponent.h"
 #include <memory>
+#include <string>  // <-- añadido para std::string
 
 class AnimatedImageComponent;
 class SystemData;
@@ -41,7 +42,12 @@ struct SystemViewCarousel
 	int maxLogoCount; // number of logos shown on the carousel
 	Vector2f logoSize;
 	float zIndex;
+
+	// NUEVO: propiedades mejoradas para comportamiento visual
+	float minLogoOpacity;      // Opacidad mínima (0.0f–1.0f)
+	float scaledLogoSpacing;   // Ajuste de separación cuando el logo central está escalado
 };
+
 
 class SystemView : public IList<SystemViewData, SystemData*>
 {
@@ -76,7 +82,6 @@ private:
 	void renderInfoBar(const Transform4x4f& trans);
 	void renderFade(const Transform4x4f& trans);
 
-
 	SystemViewCarousel mCarousel;
 	TextComponent mSystemInfo;
 
@@ -87,6 +92,9 @@ private:
 
 	bool mViewNeedsReload;
 	bool mShowing;
+
+	// NUEVO: sonido opcional al mover el carrusel
+	std::string mScrollSound;
 };
 
 #endif // ES_APP_VIEWS_SYSTEM_VIEW_H
