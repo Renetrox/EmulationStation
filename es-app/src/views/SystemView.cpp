@@ -666,9 +666,9 @@ void SystemView::renderFade(const Transform4x4f& trans)
 // Populate the system carousel with the legacy values
 void  SystemView::getDefaultElements(void)
 {
-	// Carousel
-	mCarousel.type = HORIZONTAL;
-	mCarousel.logoAlignment = ALIGN_CENTER;
+        // Carousel
+        mCarousel.type = HORIZONTAL;
+        mCarousel.logoAlignment = ALIGN_CENTER;
 	mCarousel.size.x() = mSize.x();
 	mCarousel.size.y() = 0.2325f * mSize.y();
 	mCarousel.pos.x() = 0.0f;
@@ -690,6 +690,9 @@ void  SystemView::getDefaultElements(void)
         // Default values for additional visual tuning
         mCarousel.minLogoOpacity = 0.5f; // equivalent to the previous 0x80 minimum
         mCarousel.scaledLogoSpacing = 0.0f; // 0 = classic behavior
+
+        // Reset optional per-theme values
+        mScrollSound.clear();
 
 	// System Info Bar
 	mSystemInfo.setSize(mSize.x(), mSystemInfo.getFont()->getLetterHeight()*2.2f);

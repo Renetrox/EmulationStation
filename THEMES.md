@@ -871,12 +871,17 @@ EmulationStation borrows the concept of "nine patches" from Android (or "9-Slice
 * `origin` - type: NORMALIZED_PAIR.
 	- Where on the carousel `pos` refers to.  For example, an origin of `0.5 0.5` and a `pos` of `0.5 0.5` would place the carousel exactly in the middle of the screen.  If the "POSITION" and "SIZE" attributes are themable, "ORIGIN" is implied.
 * `color` - type: COLOR.
-	- Controls the color of the carousel background.
-	- Default is FFFFFFD8
+        - Controls the color of the carousel background.
+        - Default is FFFFFFD8
+* `colorEnd` - type: COLOR.
+        - Optional end color when drawing a gradient background.
+        - Defaults to the same value as `color`.
+* `gradientType` - type: STRING.
+        - Sets the gradient direction. Accepted values are "horizontal" (default) or "vertical".
 * `logoSize` - type: NORMALIZED_PAIR.  Default is "0.25 0.155"
 * `logoScale` - type: FLOAT.
-	- Selected logo is increased in size by this scale
-	- Default is 1.2
+        - Selected logo is increased in size by this scale
+        - Default is 1.2
 * `logoRotation` - type: FLOAT.
 	- Angle in degrees that the logos should be rotated.  Value should be positive.
 	- Default is 7.5
@@ -890,10 +895,16 @@ EmulationStation borrows the concept of "nine patches" from Android (or "9-Slice
 	- Accepted values are "left", "right" or "center" when `type` is "vertical" or "vertical_wheel".
 	- Default is "center"
 * `maxLogoCount` - type: FLOAT.
-	- Sets the number of logos to display in the carousel.
-	- Default is 3
+        - Sets the number of logos to display in the carousel.
+        - Default is 3
+* `minLogoOpacity` - type: FLOAT.
+        - Sets a minimum opacity for unfocused logos (0.0 - 1.0). Default is 0.5.
+* `scaledLogoSpacing` - type: FLOAT.
+        - Adds extra spacing when scaled logos overlap. Set to 0 for classic behaviour. Default is 0.
 * `zIndex` - type: FLOAT.
-	- z-index value for component.  Components will be rendered in order of z-index value from low to high.  
+        - z-index value for component.  Components will be rendered in order of z-index value from low to high.
+* `scrollSound` - type: PATH.
+        - Optional sound played while scrolling the system carousel.
 
 The help system is a special element that displays a context-sensitive list of actions the user can take at any time.  You should try and keep the position constant throughout every screen.  Keep in mind the "default" settings (including position) are used whenever the user opens a menu.
 
