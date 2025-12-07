@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Scripting.h"
 #include "Settings.h"
+#include "Sound.h"
 #include "SystemData.h"
 #include "Window.h"
 
@@ -527,10 +528,10 @@ void SystemView::renderCarousel(const Transform4x4f& trans)
 
 		Transform4x4f logoTrans = carouselTrans;
 
-		// Ajuste de separación cuando el logo central está escalado (solo HORIZONTAL)
-		if (mCarousel.type == HORIZONTAL && mCarousel.logoScale != 1.0f && mCarousel.scaledLogoSpacing != 0.0f)
-		{
-			float logoDiffX = ((logoSpacing[0] * mCarousel.logoScale) - logoSpacing[0]) / 2.0f * mCarousel.scaledLogoSpacing;
+                // Adjust spacing when the focused logo is scaled (horizontal only)
+                if (mCarousel.type == HORIZONTAL && mCarousel.logoScale != 1.0f && mCarousel.scaledLogoSpacing != 0.0f)
+                {
+                        float logoDiffX = ((logoSpacing[0] * mCarousel.logoScale) - logoSpacing[0]) / 2.0f * mCarousel.scaledLogoSpacing;
 
 			if (index == mCursor)
 			{
@@ -557,10 +558,10 @@ void SystemView::renderCarousel(const Transform4x4f& trans)
 		scale = Math::min(mCarousel.logoScale, Math::max(1.0f, scale));
 		scale /= mCarousel.logoScale;
 
-		// opacidad mínima configurable
-		float minOpacity = mCarousel.minLogoOpacity;
-		if (minOpacity < 0.0f) minOpacity = 0.0f;
-		if (minOpacity > 1.0f) minOpacity = 1.0f;
+                // Configurable minimum opacity
+                float minOpacity = mCarousel.minLogoOpacity;
+                if (minOpacity < 0.0f) minOpacity = 0.0f;
+                if (minOpacity > 1.0f) minOpacity = 1.0f;
 
 		int opref = (int)Math::round(minOpacity * 255.0f);
 		int opacity = (int)Math::round(opref + ((0xFF - opref) * (1.0f - fabs(distance))));
@@ -686,9 +687,9 @@ void  SystemView::getDefaultElements(void)
 	mCarousel.maxLogoCount = 3;
 	mCarousel.zIndex = 40;
 
-	// NUEVO: valores por defecto para mejoras visuales
-	mCarousel.minLogoOpacity   = 0.5f; // equivalente a 0x80 de antes
-	mCarousel.scaledLogoSpacing = 0.0f; // 0 = comportamiento clásico
+        // Default values for additional visual tuning
+        mCarousel.minLogoOpacity = 0.5f; // equivalent to the previous 0x80 minimum
+        mCarousel.scaledLogoSpacing = 0.0f; // 0 = classic behavior
 
 	// System Info Bar
 	mSystemInfo.setSize(mSize.x(), mSystemInfo.getFont()->getLetterHeight()*2.2f);
@@ -757,12 +758,18 @@ void SystemView::getCarouselFromTheme(const ThemeData::ThemeElement* elem)
 	if (elem->has("scrollSound"))
 		mScrollSound = elem->get<std::string>("scrollSound");
 
-	// NUEVO: lectura de propiedades extra
-	if (elem->has("minLogoOpacity"))
-		mCarousel.minLogoOpacity = elem->get<float>("minLogoOpacity");
+        // Read optional carousel extensions
+        if (elem->has("minLogoOpacity"))
+                mCarousel.minLogoOpacity = elem->get<float>("minLogoOpacity");
 
-	if (elem->has("scaledLogoSpacing"))
-		mCarousel.scaledLogoSpacing = elem->get<float>("scaledLogoSpacing");
+        if (elem->has("scaledLogoSpacing"))
+                mCarousel.scaledLogoSpacing = elem->get<float>("scaledLogoSpacing");
+}
+
+void SystemView::onScroll(int amt)
+{
+        if (amt != 0 && !mScrollSound.empty())
+                Sound::get(mScrollSound)->play();
 }
 
 void SystemView::onShow()

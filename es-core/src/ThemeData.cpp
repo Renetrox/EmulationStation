@@ -167,14 +167,14 @@ std::map<std::string, std::map<std::string, ThemeData::ElementPropertyType>> The
 		{ "logoRotation", FLOAT },
 		{ "logoRotationOrigin", NORMALIZED_PAIR },
 		{ "logoSize", NORMALIZED_PAIR },
-		{ "logoAlignment", STRING },
-		{ "maxLogoCount", FLOAT },
-		{ "zIndex", FLOAT },
-		// NUEVO: propiedades extra del carrusel
-		{ "minLogoOpacity", FLOAT },      // 0.0 – 1.0
-		{ "scaledLogoSpacing", FLOAT },   // factor de separación
-		{ "scrollSound", PATH }           // sonido opcional (por ahora solo parseado)
-	} }
+                { "logoAlignment", STRING },
+                { "maxLogoCount", FLOAT },
+                { "zIndex", FLOAT },
+                // Additional carousel options
+                { "minLogoOpacity", FLOAT },      // 0.0 – 1.0
+                { "scaledLogoSpacing", FLOAT },   // spacing multiplier when scaling logos
+                { "scrollSound", PATH }           // optional sound to play while scrolling
+        } }
 };
 
 #define MINIMUM_THEME_FORMAT_VERSION 3
