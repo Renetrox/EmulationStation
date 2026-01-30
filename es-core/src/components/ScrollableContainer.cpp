@@ -65,16 +65,28 @@ void ScrollableContainer::setScrollPos(const Vector2f& pos)
 
 void ScrollableContainer::update(int deltaTime)
 {
-	if(mAutoScrollSpeed != 0)
+	const Vector2f contentSize = getContentSize();
+	const bool needsScrollX = contentSize.x() > getSize().x();
+	const bool needsScrollY = contentSize.y() > getSize().y();
+
+	if(mAutoScrollSpeed != 0 && needsScrollY)
 	{
 		mAutoScrollAccumulator += deltaTime;
 
 		//scale speed by our width! more text per line = slower scrolling
 		const float widthMod = (680.0f / getSize().x());
-		while(mAutoScrollAccumulator >= mAutoScrollSpeed)
+		int scrollSpeed = mAutoScrollSpeed;
+		if(widthMod > 0.0f)
+		{
+			scrollSpeed = static_cast<int>(mAutoScrollSpeed * widthMod);
+			if(scrollSpeed < 1)
+				scrollSpeed = 1;
+		}
+
+		while(mAutoScrollAccumulator >= scrollSpeed)
 		{
 			mScrollPos += mScrollDir;
-			mAutoScrollAccumulator -= mAutoScrollSpeed;
+			mAutoScrollAccumulator -= scrollSpeed;
 		}
 	}
 
@@ -84,16 +96,22 @@ void ScrollableContainer::update(int deltaTime)
 	if(mScrollPos.y() < 0)
 		mScrollPos[1] = 0;
 
-	const Vector2f contentSize = getContentSize();
-	if(mScrollPos.x() + getSize().x() > contentSize.x())
+	if(!needsScrollX)
+	{
+		mScrollPos[0] = 0;
+	}
+	else if(mScrollPos.x() + getSize().x() > contentSize.x())
 	{
 		mScrollPos[0] = contentSize.x() - getSize().x();
 		mAtEnd = true;
 	}
 
-	if(contentSize.y() < getSize().y())
+	if(!needsScrollY)
 	{
 		mScrollPos[1] = 0;
+		mAtEnd = false;
+		mAutoScrollAccumulator = 0;
+		mAutoScrollResetAccumulator = 0;
 	}else if(mScrollPos.y() + getSize().y() > contentSize.y())
 	{
 		mScrollPos[1] = contentSize.y() - getSize().y();
